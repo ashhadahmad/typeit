@@ -5,6 +5,8 @@ import Dashboard from './components/dashboard/Dashboard'
 import ProjectDetails from './components/projects/ProjectDetails'
 import Signin from './components/auth/signin'
 import Signup from './components/auth/signup'
+import CreateProject from './components/projects/CreateProject'
+import Footer from './components/layout/footer'
 
 class App extends Component {
   render() {
@@ -17,9 +19,11 @@ class App extends Component {
             <Route path='/project/:id' component={ProjectDetails} />
             <Route path='/signin' component = {Signin} />
             <Route path='/signup' component = {Signup} />
+            <Route path='/create' component = {CreateProject} />
 
             <Redirect to='/dashboard' />
           </Switch>
+          <Footer />
         </div>
       </BrowserRouter>
     );
