@@ -15,13 +15,13 @@ class App extends Component {
         <div className="App">
           <Navbar />
           <Switch>
-            <Route path='/dashboard' component={Dashboard} />
+            <Route exact path='/' component={Dashboard} />
             <Route path='/project/:id' component={ProjectDetails} />
             <Route path='/signin' component = {Signin} />
             <Route path='/signup' component = {Signup} />
             <Route path='/create' component = {CreateProject} />
 
-            <Redirect to='/dashboard' />
+            {/* <Redirect to='/dashboard' /> */}
           </Switch>
           <Footer />
         </div>

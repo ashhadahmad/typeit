@@ -16,7 +16,7 @@ class Navbar extends Component{
     render() {
         const activity = this.state.active ? 'is-active' : '';
         return(
-            <nav className="navbar is-primary">
+            <nav className="navbar is-dark">
                 <div className="container">
                     <div className="navbar-brand">
                         <Link to="/" className="navbar-item">

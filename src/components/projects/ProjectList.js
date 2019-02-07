@@ -1,10 +1,14 @@
 import React from 'react'
 import ProjectSummary from './ProjectSummary'
-const ProjectList = () => {
+const ProjectList = ({projects}) => {
     return(
     <div className="tile is-ancestor">
         <div className="tile is-vertical is-12">
-               <ProjectSummary title={`Titles`} smalltext={`Subtitles`} author={`Ashhad`} date={`Date`}/> 
+            {projects && projects.map(p => {
+                return(                
+                    <ProjectSummary project={p} key={p.id}/> 
+                    )
+            })}
         </div> 
     </div> 
     )
