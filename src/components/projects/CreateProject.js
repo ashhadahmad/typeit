@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {createProject} from '../../store/actions/projectAction'
+import {Redirect} from 'react-router-dom'
 
 class CreateProject extends Component {
   constructor(props){
@@ -12,15 +15,24 @@ class CreateProject extends Component {
   handleChange = (e) => {
       this.setState({
         [e.target.id]: e.target.value
+        
       })
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state)
+    if(this.state.title !== '' && this.state.content !== '') {
+        this.props.createProject(this.state);
+        this.props.history.push('/')
+    }
+    else {
+        console.log("EMPTY")
+    }    
   }
 
   render() {
+    const {auth} = this.props
+    if(!auth.uid) return <Redirect to= '/signin' />
     return (
       <div>
           <section className="section">
@@ -46,7 +58,7 @@ class CreateProject extends Component {
                             </div>
 
                             <div className="control">
-                              <button className="button is-primary" onClick={this.handleSubmit}>Submit</button>
+                            <button className="button is-primary" onClick={this.handleSubmit}>Submit</button>
                             </div>
 
 
@@ -60,4 +72,16 @@ class CreateProject extends Component {
   }
 }
 
-export default CreateProject
+const MapStateToProps = (state) => {
+    return{
+        auth: state.firebase.auth
+    }
+}
+
+const MapDispatchToProps = (dispatch) => {
+    return {
+        createProject: (project) => dispatch(createProject(project))
+    }
+}
+
+export default connect(MapStateToProps, MapDispatchToProps)(CreateProject)

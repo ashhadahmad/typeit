@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom'
+import {signup} from '../../store/actions/authActions'
 
-class Signin extends Component {
+class Signup extends Component {
   constructor(props){
       super(props)
       this.state = {
@@ -19,10 +22,13 @@ class Signin extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state)
+    this.props.signup(this.state)
   }
 
   render() {
+    const {auth, authError, authErrorMessage} = this.props
+    if(auth.uid) return <Redirect to= '/' />
+    const formInput = authError ? 'is-danger' : '';
     return (
       <div>
           <section className="section">
@@ -35,7 +41,7 @@ class Signin extends Component {
                             <div className="field">
                               <label className="label">First Name</label>
                               <div className="control has-icons-left">
-                                <input className="input" type="text" id="firstname" placeholder="e.g Alex" onChange={this.handleChange}/>
+                                <input className={`input ${formInput}`} type="text" id="firstname" placeholder="e.g Alex" onChange={this.handleChange}/>
                                 <span className="icon is-small is-left">
                                 <i className="fas fa-user"></i>
                                 </span>
@@ -45,7 +51,7 @@ class Signin extends Component {
                             <div className="field">
                               <label className="label">Last Name</label>
                               <div className="control has-icons-left">
-                                <input className="input" type="text" id="lastname" placeholder="e.g Smith" onChange={this.handleChange}/>
+                                <input className={`input ${formInput}`} type="text" id="lastname" placeholder="e.g Smith" onChange={this.handleChange}/>
                                 <span className="icon is-small is-left">
                                 <i className="fas fa-user"></i>
                                 </span>
@@ -55,7 +61,7 @@ class Signin extends Component {
                             <div className="field">
                             <label className="label">Email</label>
                                 <div className="control has-icons-left">
-                                <input className="input" type="email" id="email" placeholder="Enter your email address" onChange={this.handleChange}/>
+                                <input className={`input ${formInput}`} type="email" id="email" placeholder="Enter your email address" onChange={this.handleChange}/>
                                 <span className="icon is-small is-left">
                                 <i className="fas fa-envelope"></i>
                                 </span>
@@ -65,12 +71,15 @@ class Signin extends Component {
                             <div className="field">
                             <label className="label">Password</label>
                                 <div className="control has-icons-left">
-                                <input className="input" type="password" id="password" placeholder="Enter your password" onChange={this.handleChange}/>
+                                <input className={`input ${formInput}`} type="password" id="password" placeholder="Enter your password" onChange={this.handleChange}/>
                                 <span className="icon is-small is-left">
                                 <i className="fas fa-lock"></i>
                                 </span>
                                 </div>
                             </div>
+
+                            {authError ? <div className="field"><p className="has-text-danger">{authErrorMessage}</p></div>: null}
+
 
                             <div className="control">
                               <button className="button is-primary" onClick={this.handleSubmit}>Submit</button>
@@ -87,4 +96,20 @@ class Signin extends Component {
   }
 }
 
-export default Signin
+
+const MapStateToProps = (state) => {
+  return {
+      auth: state.firebase.auth,
+      authError: state.auth.authError, 
+      authErrorMessage: state.auth.authErrorMessage
+  }
+}
+const MapDispatchToProps = (dispatch) => {
+  return {
+      signup: (newUser) => dispatch(signup(newUser)) 
+  }
+}
+
+
+
+export default connect(MapStateToProps, MapDispatchToProps)(Signup)

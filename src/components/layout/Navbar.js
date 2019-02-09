@@ -2,7 +2,7 @@ import React , { Component } from 'react';
 import {Link} from 'react-router-dom'
 import SignedInLinks from './SignedInLinks'
 import SignedOutLinks from './SignedOutLinks'
-
+import { connect } from 'react-redux'
 
 class Navbar extends Component{
     state = {active: false}
@@ -11,6 +11,16 @@ class Navbar extends Component{
         this.setState({
             active: !this.state.active
         })
+    }
+
+    renderlinks() {
+        const activity = this.state.active ? 'is-active' : '';
+        if(this.props.auth.uid){
+            return <SignedInLinks act={activity} name={this.props.profile.firstname}/>
+        }
+        else {
+            return <SignedOutLinks act={activity} />
+        }
     }
 
     render() {
@@ -28,13 +38,19 @@ class Navbar extends Component{
                         <span aria-hidden="true"></span>
                         </a>
                     </div>
-                    <SignedInLinks act = {activity}/>
-                    <SignedOutLinks act = {activity} />
+                    {this.renderlinks()}
                 </div>
             </nav>
         )
     }
 }
 
-export default Navbar;
+const MapStateToProps = (state) => {
+    return{
+        auth: state.firebase.auth,
+        profile: state.firebase.profile
+    }
+}
+
+export default connect(MapStateToProps)(Navbar);
 

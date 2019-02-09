@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {signin} from '../../store/actions/authActions'
+import { Redirect } from 'react-router-dom'
 
-class Signup extends Component {
+class Signin extends Component {
   constructor(props){
       super(props)
       this.state = {
@@ -17,11 +20,14 @@ class Signup extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state)
+    this.props.signin(this.state)
   }
 
   render() {
-    return (
+    const {authErrorMessage, authError, auth} = this.props
+    if(auth.uid) return <Redirect to= '/' />
+    const formInput = authError ? 'is-danger' : '';
+  return (
       <div>
           <section className="section">
               <div className="container">
@@ -33,22 +39,25 @@ class Signup extends Component {
                             <div className="field">
                             <label className="label">Email</label>
                                 <div className="control has-icons-left">
-                                <input className="input" type="email" id="email" placeholder="Enter your email address" onChange={this.handleChange}/>
+                                <input className={`input ${formInput}`} type="email" id="email" placeholder="Enter your email address" onChange={this.handleChange}/>
                                 <span className="icon is-small is-left">
                                 <i className="fas fa-envelope"></i>
                                 </span>
                                 </div>
+                                
                             </div>
 
                             <div className="field">
                             <label className="label">Password</label>
                                 <div className="control has-icons-left">
-                                <input className="input" type="password" id="password" placeholder="Enter your password" onChange={this.handleChange}/>
+                                <input className={`input ${formInput}`} type="password" id="password" placeholder="Enter your password" onChange={this.handleChange}/>
                                 <span className="icon is-small is-left">
                                 <i className="fas fa-lock"></i>
                                 </span>
                                 </div>
                             </div>
+
+                            {authError ? <div className="field"><p className="has-text-danger">{authErrorMessage}</p></div>: null}
 
                             <div className="control">
                               <button className="button is-primary" onClick={this.handleSubmit}>Submit</button>
@@ -65,4 +74,18 @@ class Signup extends Component {
   }
 }
 
-export default Signup
+const MapStateToProps = (state) => {
+    return {
+        authError: state.auth.authError,
+        authErrorMessage: state.auth.authErrorMessage,
+        auth: state.firebase.auth 
+    }
+}
+
+const MapDispatchToProps = (dispatch) => {
+    return{
+        signin: (creds) => dispatch(signin(creds))
+    }
+  }
+
+export default connect(MapStateToProps, MapDispatchToProps)(Signin)
