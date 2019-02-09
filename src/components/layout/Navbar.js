@@ -32,7 +32,7 @@ class Navbar extends Component{
                         <Link to="/" className="navbar-item">
                         <h1 className="title has-text-white	">Typeit</h1>
                         </Link>
-                        <a role="button" className={`navbar-burger ${activity}`} aria-label="menu" onClick={this.toggleActive} aria-expanded="false">
+                        <a href='#' role="button" className={`navbar-burger ${activity}`} aria-label="menu" onClick={this.toggleActive} aria-expanded="false">
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>

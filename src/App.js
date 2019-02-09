@@ -21,7 +21,7 @@ class App extends Component {
             <Route path='/signup' component = {Signup} />
             <Route path='/create' component = {CreateProject} />
 
-            {/* <Redirect to='/dashboard' /> */}
+            <Redirect to='/' />
           </Switch>
           <Footer />
         </div>
