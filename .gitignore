@@ -8,6 +8,10 @@
 # testing
 /coverage
 
+/functions
+/.firebase
+.firebaserc
+
 # production
 /build
 
@@ -83,7 +87,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-functions
-.firebaserc
-src/config/fbconfig.js
