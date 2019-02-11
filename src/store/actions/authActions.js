@@ -6,13 +6,11 @@ export const signin = (creds) => {
             creds.email, creds.password
         )
         .then(() => {
-            console.log('Login Success')
             dispatch({
                 type: 'LOGIN_SUCCESS'
             })
         })
         .catch((err) => {
-            console.log('Login Error')
             dispatch({
                 type: 'LOGIN_ERROR',
                 err

@@ -8,20 +8,19 @@ import { Redirect } from 'react-router-dom'
 
 class Dashboard extends Component {
     render() {
-        const {project, auth} = this.props;
+        const {project, auth, notifications} = this.props;
         if(!auth.uid) return <Redirect to='/signin' />
         return (
             <section id="main" className="section">
             <div className="dashboard container">
                 <div className="columns">
-                    <div className="column is-three-fifths">
-                            <ProjectList projects={project}/>
+                    <div className="column is-two-fifths">
+                    <div className="notification">
+                        <Notification notifications = {notifications}/>
+                        </div>
                     </div>
                     <div className="column">
-                        <div className="notification">
-                        <Notification />
-                        </div>
-                        
+                    <ProjectList projects={project}/>
                     </div>
                 </div>
             </div>
@@ -31,10 +30,10 @@ class Dashboard extends Component {
 }
 
 const MapStateToProps = (state) => {
-    console.log(state)
     return {
         project: state.firestore.ordered.projects,
-        auth: state.firebase.auth
+        auth: state.firebase.auth,
+        notifications: state.firestore.ordered.notifications
     }
 }
 
@@ -42,6 +41,7 @@ const MapStateToProps = (state) => {
 export default compose(
     connect(MapStateToProps),
     firestoreConnect([
-      { collection: 'projects' }
+      { collection: 'projects', orderBy: ['createdAt', 'desc']},
+      { collection: 'notifications', limit: 5, orderBy: ['time', 'desc']}
     ])
   )(Dashboard)
