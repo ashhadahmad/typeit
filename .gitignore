@@ -12,6 +12,7 @@
 /.firebase
 .firebaserc
 /src/config/fbconfig.js
+firebase.json
 
 # production
 /build
