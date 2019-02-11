@@ -11,6 +11,7 @@
 /functions
 /.firebase
 .firebaserc
+/src/config/fbconfig.js
 
 # production
 /build
